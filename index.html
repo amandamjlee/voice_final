@@ -1,0 +1,41 @@
+<html>
+	<head>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+    <!-- <script src="js/p5.speech.js"></script> -->
+
+		<script>
+
+
+			var socket = io.connect();
+
+			socket.on('connect', function() {
+				console.log("Connected");
+			});
+
+			// Receive from any event
+			socket.on('chatmessage', function (data) {
+				console.log(data);
+				document.getElementById('messages').innerHTML = "" + data +
+ + "" + document.getElementById('messages').innerHTML;
+			});
+
+			var sendmessage = function(message) {
+				console.log("chatmessage: " + message);
+				socket.emit('chatmessage', message);
+			};
+
+
+
+
+		</script>
+	</head>
+ <body>
+ <div id="messages">
+ Say "knock knock"
+ </div>
+ <input type="text" id="message" name="message">
+ <input type="submit" value="submit" onclick="sendmessage(document.getElementById('message').value);">
+ </body>
+</html>
